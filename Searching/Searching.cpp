@@ -1,6 +1,5 @@
 #include <iostream>
 #include <conio.h>
-#include <vector>
 
 //Struct
 typedef struct TNode {
@@ -10,9 +9,6 @@ typedef struct TNode {
 
 //Pointers;
 TNode* baru, * awal, * akhir, * bantu_tampil, *bantu_cari;
-
-//Variables;
-
 
 //Functions
 void _init();
@@ -24,6 +20,7 @@ void tambah_pertama();
 void tambah_depan();
 void tambah_tengah();
 void tambah_belakang();
+void tampil();
 void cari();
 
 //Main
@@ -31,7 +28,7 @@ int main() {
 	bool lanjut = true;
 	int pilihan = 0;
 	do {
-		std::cout << "\n\n";
+		system("CLS");
 		menu();
 		tanya(&pilihan);
 		switch (pilihan) {
@@ -57,6 +54,8 @@ int main() {
 			}
 			break;
 		}
+		std::cout <<"\n";
+		system("PAUSE");
 	} while (lanjut);
 }
 void _init() {
@@ -104,23 +103,38 @@ void tambah_pertama() {
 	akhir = baru;
 	baru->next = NULL;
 	akhir->next = NULL;
+	std::cout << "Data pertama berhasil ditambahkan\n";
 }
 void tambah_depan() {
 	baru->next = awal;
 	awal = baru;
+	std::cout << "Tambah depan berhasil\n";
 }
 void tambah_tengah() {
-
+		// Membuat pointer tengah dan depan;  
+		TNode* tengah = awal;
+		TNode* depan = (awal)->next;
+		//Perulangan selama pointer depan dan depan->next bukan NULL.
+		while (depan && depan->next) {
+			// setiap iterasi akan memajukan pointer 1 kali.
+			tengah = tengah->next;
+			// setiap iterasi akan memajukan pointer 2 kali. 
+			depan = depan->next->next;
+		}
+		// memasukan node baru pada posisi tengah.
+		baru->next = tengah->next;
+		tengah->next = baru;
+		std::cout << "Tambah tengah berhasil\n";
 }
 void tambah_belakang() {
 	baru->next = NULL;
 	akhir->next = baru;
 	akhir = baru;
+	std::cout << "Tambah belakang berhasil\n";
 }
 
 void cari() {
 	int c_data = 0;
-	//std::vector<int> result;
 	bool ketemu = false;
 	std::cout << "Masukan data yang ingin dicari : ";
 	std::cin >> c_data;
@@ -132,8 +146,8 @@ void cari() {
 		do {
 			if (bantu_cari->data == c_data) {
 				ketemu = true;
-				std::cout << "Data ditemukan";
-				std::cout << "Lokasi : " << bantu_cari;
+				std::cout << "Data ditemukan\n";
+				std::cout << "Lokasi : " << bantu_cari<<"\n";
 			}
 			else {
 				bantu_cari = bantu_cari->next;
@@ -151,8 +165,9 @@ void tampil() {
 	}
 	else {
 		bantu_tampil = awal;
+		std::cout << "Data : \n";
 		do {
-			std::cout << "Data : " << bantu_tampil->data;
+			std::cout<< bantu_tampil->data<<" | ";
 			bantu_tampil = bantu_tampil->next;
 		} while (bantu_tampil != NULL);
 	}
